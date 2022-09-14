@@ -1,9 +1,9 @@
-package com.louis.rabc.module.service.impl;
+package com.louis.rabc.module.user.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.louis.rabc.module.dao.RoleDao;
-import com.louis.rabc.module.entity.Role;
-import com.louis.rabc.module.service.RoleService;
+import com.louis.rabc.module.user.dao.RoleDao;
+import com.louis.rabc.module.user.entity.Role;
+import com.louis.rabc.module.user.service.RoleService;
 import org.springframework.stereotype.Service;
 
 /**

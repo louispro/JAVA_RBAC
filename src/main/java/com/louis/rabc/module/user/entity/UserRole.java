@@ -1,4 +1,4 @@
-package com.louis.rabc.module.entity;
+package com.louis.rabc.module.user.entity;
 
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
@@ -7,24 +7,24 @@ import java.io.Serializable;
 import lombok.Data;
 
 /**
- * (RolePermission)表实体类
+ * (UserRole)表实体类
  *
  * @author 赖小燚
- * @since 2022-09-14 21:13:22
+ * @since 2022-09-14 21:13:23
  */
 @SuppressWarnings("serial")
 @Data
-public class RolePermission extends Model<RolePermission> {
+public class UserRole extends Model<UserRole> {
+
+    /**
+     * 用户id
+     */
+    private String userId;
 
     /**
      * 角色id
      */
     private String roleId;
-
-    /**
-     * 资源id
-     */
-    private String permissionId;
 
     /**
      * 获取主键值
@@ -33,7 +33,7 @@ public class RolePermission extends Model<RolePermission> {
      */
     @Override
     public Serializable pkVal() {
-        return this.roleId;
+        return this.userId;
     }
 }
 

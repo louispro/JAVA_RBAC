@@ -1,7 +1,7 @@
-package com.louis.rabc.module.service;
+package com.louis.rabc.module.user.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.louis.rabc.module.entity.UserRole;
+import com.louis.rabc.module.user.entity.UserRole;
 
 /**
  * (UserRole)表服务接口

@@ -1,4 +1,4 @@
-package com.louis.rabc.module.entity;
+package com.louis.rabc.module.user.entity;
 
 import java.util.Date;
 
@@ -9,14 +9,14 @@ import java.io.Serializable;
 import lombok.Data;
 
 /**
- * (User)表实体类
+ * (Role)表实体类
  *
  * @author 赖小燚
- * @since 2022-09-14 21:13:23
+ * @since 2022-09-14 21:13:21
  */
 @SuppressWarnings("serial")
 @Data
-public class User extends Model<User> {
+public class Role extends Model<Role> {
 
     /**
      * 主键
@@ -24,34 +24,14 @@ public class User extends Model<User> {
     private String id;
 
     /**
-     * 用户名
+     * 角色名
      */
-    private String username;
+    private String roleName;
 
     /**
-     * 密码
+     * 备注
      */
-    private String password;
-
-    /**
-     * 昵称
-     */
-    private String nickname;
-
-    /**
-     * 年龄
-     */
-    private Integer age;
-
-    /**
-     * 性别，0女，1男
-     */
-    private Integer sex;
-
-    /**
-     * 地址
-     */
-    private String address;
+    private String remark;
 
     /**
      * 创建时间
@@ -64,7 +44,7 @@ public class User extends Model<User> {
     private Date updateTime;
 
     /**
-     * 逻辑删除，0未删除，1已删除
+     * 逻辑删除，0删除，1已删除
      */
     private Integer deleteState;
 

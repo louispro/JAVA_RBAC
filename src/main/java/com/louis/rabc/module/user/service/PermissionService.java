@@ -1,7 +1,7 @@
-package com.louis.rabc.module.service;
+package com.louis.rabc.module.user.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.louis.rabc.module.entity.Permission;
+import com.louis.rabc.module.user.entity.Permission;
 
 /**
  * (Permission)表服务接口

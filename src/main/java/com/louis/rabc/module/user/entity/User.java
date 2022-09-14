@@ -1,4 +1,4 @@
-package com.louis.rabc.module.entity;
+package com.louis.rabc.module.user.entity;
 
 import java.util.Date;
 
@@ -9,14 +9,14 @@ import java.io.Serializable;
 import lombok.Data;
 
 /**
- * (Permission)表实体类
+ * (User)表实体类
  *
  * @author 赖小燚
- * @since 2022-09-14 21:13:21
+ * @since 2022-09-14 21:13:23
  */
 @SuppressWarnings("serial")
 @Data
-public class Permission extends Model<Permission> {
+public class User extends Model<User> {
 
     /**
      * 主键
@@ -24,19 +24,34 @@ public class Permission extends Model<Permission> {
     private String id;
 
     /**
-     * 资源名
+     * 用户名
      */
-    private String resourceName;
+    private String username;
 
     /**
-     * 资源路径
+     * 密码
      */
-    private String path;
+    private String password;
 
     /**
-     * 备注
+     * 昵称
      */
-    private String remark;
+    private String nickname;
+
+    /**
+     * 年龄
+     */
+    private Integer age;
+
+    /**
+     * 性别，0女，1男
+     */
+    private Integer sex;
+
+    /**
+     * 地址
+     */
+    private String address;
 
     /**
      * 创建时间

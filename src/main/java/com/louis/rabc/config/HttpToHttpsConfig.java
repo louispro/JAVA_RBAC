@@ -1,4 +1,4 @@
-package com.louis.rabc.module.config;
+package com.louis.rabc.config;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;

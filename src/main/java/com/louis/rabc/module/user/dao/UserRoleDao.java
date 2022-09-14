@@ -1,7 +1,7 @@
-package com.louis.rabc.module.dao;
+package com.louis.rabc.module.user.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.louis.rabc.module.entity.UserRole;
+import com.louis.rabc.module.user.entity.UserRole;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

@@ -1,4 +1,4 @@
-package com.louis.rabc.module.controller;
+package com.louis.rabc.module.user.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

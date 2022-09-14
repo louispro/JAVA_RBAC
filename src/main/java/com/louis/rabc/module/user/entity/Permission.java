@@ -1,4 +1,4 @@
-package com.louis.rabc.module.entity;
+package com.louis.rabc.module.user.entity;
 
 import java.util.Date;
 
@@ -9,14 +9,14 @@ import java.io.Serializable;
 import lombok.Data;
 
 /**
- * (Role)表实体类
+ * (Permission)表实体类
  *
  * @author 赖小燚
  * @since 2022-09-14 21:13:21
  */
 @SuppressWarnings("serial")
 @Data
-public class Role extends Model<Role> {
+public class Permission extends Model<Permission> {
 
     /**
      * 主键
@@ -24,9 +24,14 @@ public class Role extends Model<Role> {
     private String id;
 
     /**
-     * 角色名
+     * 资源名
      */
-    private String roleName;
+    private String resourceName;
+
+    /**
+     * 资源路径
+     */
+    private String path;
 
     /**
      * 备注
@@ -44,7 +49,7 @@ public class Role extends Model<Role> {
     private Date updateTime;
 
     /**
-     * 逻辑删除，0删除，1已删除
+     * 逻辑删除，0未删除，1已删除
      */
     private Integer deleteState;
 
