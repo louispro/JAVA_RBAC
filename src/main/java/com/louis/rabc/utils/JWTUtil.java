@@ -35,7 +35,7 @@ public class JWTUtil {
     }
 
     /**
-     * 解密令牌
+     * 解密token
      *
      * @return {@link String}
      */
