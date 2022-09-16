@@ -46,6 +46,6 @@ public class LoginServiceImpl implements LoginService {
         user.setPassword(passwordDigest);
         user.setCreateTime(new Date());
         this.userService.save(user);
-        return null;
+        return user;
     }
 }

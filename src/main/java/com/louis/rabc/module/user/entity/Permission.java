@@ -2,6 +2,8 @@ package com.louis.rabc.module.user.entity;
 
 import java.util.Date;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.io.Serializable;
@@ -21,7 +23,8 @@ public class Permission extends Model<Permission> {
     /**
      * 主键
      */
-    private String id;
+    @TableId(type = IdType.AUTO)
+    private Long id;
 
     /**
      * 资源名

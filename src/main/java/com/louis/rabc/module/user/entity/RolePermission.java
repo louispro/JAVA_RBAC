@@ -19,12 +19,12 @@ public class RolePermission extends Model<RolePermission> {
     /**
      * 角色id
      */
-    private String roleId;
+    private Long roleId;
 
     /**
      * 资源id
      */
-    private String permissionId;
+    private Long permissionId;
 
     /**
      * 获取主键值

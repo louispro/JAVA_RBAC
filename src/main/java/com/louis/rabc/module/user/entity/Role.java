@@ -21,7 +21,7 @@ public class Role extends Model<Role> {
     /**
      * 主键
      */
-    private String id;
+    private Long id;
 
     /**
      * 角色名

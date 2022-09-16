@@ -1,6 +1,7 @@
 package com.louis.rabc.module.user.controller;
 
 import com.louis.rabc.module.user.entity.User;
+import com.louis.rabc.module.user.entity.UserRole;
 import com.louis.rabc.module.user.service.LoginService;
 import com.louis.rabc.module.user.service.UserRoleService;
 import com.louis.rabc.module.user.vo.UserVo;
@@ -47,6 +48,9 @@ public class LoginController {
         log.info("requestParam ===> {}", requestParam);
         User user = this.loginService.decryptCiphertext(requestParam);
         //赋予角色
+        UserRole userRole =  new UserRole();
+        userRole.setRoleId(user.getId());
+        userRole.setRoleId(5L);
         return true;
     }
 }
