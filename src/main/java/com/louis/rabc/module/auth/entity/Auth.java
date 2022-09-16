@@ -2,6 +2,7 @@ package com.louis.rabc.module.auth.entity;
 
 import java.util.Date;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.io.Serializable;
@@ -16,11 +17,12 @@ import lombok.Data;
  */
 @SuppressWarnings("serial")
 @Data
-public class Keys extends Model<Keys> {
+public class Auth extends Model<Auth> {
 
     /**
      * 主键
      */
+    @TableId
     private Integer id;
 
     /**

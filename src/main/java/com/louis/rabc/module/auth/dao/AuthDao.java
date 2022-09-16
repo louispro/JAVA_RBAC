@@ -1,7 +1,7 @@
 package com.louis.rabc.module.auth.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.louis.rabc.module.auth.entity.Keys;
+import com.louis.rabc.module.auth.entity.Auth;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2022-09-16 12:22:40
  */
 @Mapper
-public interface KeysDao extends BaseMapper<Keys> {
+public interface AuthDao extends BaseMapper<Auth> {
 
 }
 
