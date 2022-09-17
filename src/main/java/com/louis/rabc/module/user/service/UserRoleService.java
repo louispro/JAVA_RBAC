@@ -11,5 +11,12 @@ import com.louis.rabc.module.user.entity.UserRole;
  */
 public interface UserRoleService extends IService<UserRole> {
 
+    /**
+     * 添加用户角色
+     *
+     * @param username 用户名
+     * @return {@link Boolean}
+     */
+    Boolean addUserRole(String username);
 }
 

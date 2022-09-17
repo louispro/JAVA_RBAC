@@ -1,7 +1,11 @@
 package com.louis.rabc.module.auth.controller;
 
+import com.louis.rabc.annotation.ResponseUnify;
 import com.louis.rabc.module.auth.entity.Auth;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,8 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2022/9/16 16:27
  **/
 @RestController
-@RequestMapping("rbac/auth")
+@RequestMapping("auth")
 @AllArgsConstructor
+@Api(tags = "加密相关")
+@Slf4j
 public class AuthController {
 
     private final Auth auth;
@@ -24,7 +30,9 @@ public class AuthController {
      * @return {@link String}
      */
     @PostMapping("publicKey")
-    public String getPublicKey() {
+    @ApiOperation("获取公钥")
+    @ResponseUnify
+    public Object getPublicKey() {
         return auth.getPublicKey();
     }
 

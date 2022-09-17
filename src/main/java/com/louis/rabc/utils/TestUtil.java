@@ -4,6 +4,10 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
 import cn.hutool.json.JSONObject;
+import com.louis.rabc.module.auth.entity.Auth;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -13,7 +17,12 @@ import java.util.Base64;
  * @author laixiaoyi
  * @since 2022/9/16 11:08
  **/
+@Component
+@AllArgsConstructor
+@Slf4j
 public class TestUtil {
+
+    private final Auth auth;
 
     public static String encrypted(String username, String password) {
 
@@ -38,13 +47,28 @@ public class TestUtil {
             JSONObject jsonObject = new JSONObject();
             jsonObject.set("password", password);
             jsonObject.set("timeMillis", timeMillis);
-            System.out.println("将要加密的密文为： " + jsonObject);
-            String encrypt = rsa.encryptBase64(jsonObject.toString(), KeyType.PublicKey);
+            jsonObject.set("phone", "17605609116");
+            System.out.println("将要加密的密文为： " + "17605609116");
+//            System.out.println("将要加密的密文为： " + jsonObject.toString());
+            String encrypt = rsa.encryptBase64("17605609116", KeyType.PublicKey);
+//            String encrypt = rsa.encryptBase64(jsonObject.toString(), KeyType.PublicKey);
             System.out.println("rsa加密后的密文为：" + encrypt);
             String decrypt = rsa.decryptStr(encrypt, KeyType.PrivateKey);
             System.out.println("解密后的密文为：" + decrypt);
         }
         return null;
+    }
+
+    public void loginEncrypt() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.set("timeMillis", String.valueOf(System.currentTimeMillis()));
+        jsonObject.set("password", "123456");
+        RSA rsa = new RSA(auth.getPrivateKey(), auth.getPublicKey());
+        log.info("jsonObject ===> {}", jsonObject);
+        String encrypt = rsa.encryptBase64(jsonObject.toString(), KeyType.PublicKey);
+        log.info("encrypt ===> {}", encrypt);
+        String decrypt = rsa.decryptStr(encrypt, KeyType.PrivateKey);
+        log.info("decrypt ===> {}", decrypt);
     }
 
     public static void main(String[] args) {

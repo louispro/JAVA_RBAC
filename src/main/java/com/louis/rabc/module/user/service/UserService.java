@@ -11,5 +11,6 @@ import com.louis.rabc.module.user.entity.User;
  */
 public interface UserService extends IService<User> {
 
+    void createUser(String username, String phone, String passwordDigest);
 }
 

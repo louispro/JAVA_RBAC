@@ -6,6 +6,8 @@ import com.louis.rabc.module.user.entity.User;
 import com.louis.rabc.module.user.service.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * (User)表服务实现类
  *
@@ -14,6 +16,14 @@ import org.springframework.stereotype.Service;
  */
 @Service("userService")
 public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserService {
-
+    @Override
+    public void createUser(String username, String phone, String passwordDigest) {
+        User user = new User();
+        user.setUsername(username);
+        user.setPhone(phone);
+        user.setPassword(passwordDigest);
+        user.setCreateTime(new Date());
+        this.baseMapper.insert(user);
+    }
 }
 

@@ -9,6 +9,12 @@ import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * http, https配置
+ *
+ * @author louis
+ * @date 2022/09/17
+ */
 @Configuration
 public class HttpToHttpsConfig {
 

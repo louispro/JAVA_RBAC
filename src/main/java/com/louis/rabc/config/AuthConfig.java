@@ -7,9 +7,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * 身份验证配置
+ *
  * @author laixiaoyi
+ * @date 2022/09/17
  * @since 2022/9/16 12:24
- **/
+ */
 @Configuration
 @AllArgsConstructor
 public class AuthConfig {
