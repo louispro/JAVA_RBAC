@@ -1,7 +1,6 @@
 package com.louis.rabc.handler;
 
-import cn.hutool.json.JSONUtil;
-import com.louis.rabc.annotation.ResponseUnify;
+import com.louis.rabc.annotation.AuthAndResponseUnify;
 import com.louis.rabc.response.ResponseExceptionVo;
 import com.louis.rabc.response.ResponseVo;
 import lombok.extern.slf4j.Slf4j;
@@ -29,9 +28,9 @@ public class ResponseResultHandler implements ResponseBodyAdvice<Object> {
     public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> aClass) {
         ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = Objects.requireNonNull(sra).getRequest();
-        ResponseUnify responseUnify = (ResponseUnify) request.getAttribute(RESPONSE_RESULT_ANNOTATION);
+        AuthAndResponseUnify authAndResponseUnify = (AuthAndResponseUnify) request.getAttribute(RESPONSE_RESULT_ANNOTATION);
         // 判断返回体是否需要处理
-        return responseUnify != null;
+        return authAndResponseUnify != null;
     }
 
     @Override

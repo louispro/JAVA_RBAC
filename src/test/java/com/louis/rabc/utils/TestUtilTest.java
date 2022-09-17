@@ -4,8 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 class TestUtilTest {
 
@@ -14,6 +12,11 @@ class TestUtilTest {
 
     @Test
     void loginEncrypt() {
-        testUtil.loginEncrypt();
+        testUtil.loginByPasswordEncrypt();
+    }
+
+    @Test
+    void loginByMailEncrypt() {
+        testUtil.loginByMailEncrypt();
     }
 }

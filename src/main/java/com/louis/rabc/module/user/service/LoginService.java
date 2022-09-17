@@ -5,6 +5,8 @@ import com.louis.rabc.module.user.dto.UserLoginDto;
 import com.louis.rabc.module.user.entity.User;
 import com.louis.rabc.module.user.vo.UserVo;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface LoginService {
     /**
      * 解密密文
@@ -24,12 +26,12 @@ public interface LoginService {
     Boolean register(JSONObject requestJson, String decrypt);
 
     /**
-     * 登录
+     * 登录通过密码
      *
      * @param dto 用户名和密码
-     * @return {@link UserVo}
+     * @return {@link String}
      */
-    String login(UserLoginDto dto);
+    String loginByPassword(UserLoginDto dto);
 
     /**
      * 检查令牌
@@ -38,4 +40,22 @@ public interface LoginService {
      * @return {@link Boolean}
      */
     Boolean checkToken(String token);
+
+    /**
+     * 注销
+     *
+     * @param request 请求
+     * @return {@link Boolean}
+     */
+    Boolean logout(HttpServletRequest request);
+
+    /**
+     * 登录通过邮件
+     *
+     * @param mail 邮件
+     * @return {@link String}
+     */
+    Boolean loginByMail(String mail, String authCode);
+
+    String passwordMd5(String password);
 }

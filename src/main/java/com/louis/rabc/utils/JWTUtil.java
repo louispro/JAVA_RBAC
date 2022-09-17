@@ -12,15 +12,16 @@ import java.util.UUID;
 
 public class JWTUtil {
 
+    private static final String SECRET_KEY = "SECRET_KEY";
+
     /**
      * 生成token
      *
      * @param username  用户名
      * @param role      角色
-     * @param publicKey 公钥
      * @return {@link String}
      */
-    public static String generateToken(String username, String role, String publicKey) {
+    public static String generateToken(String username, String role) {
         JwtBuilder jwtBuilder = Jwts.builder();
         String token = jwtBuilder.setHeaderParam("typ", "JWT")
                 .setHeaderParam("alg", "HS256")
@@ -29,7 +30,7 @@ public class JWTUtil {
                 .setSubject("authentication-login")
                 .setExpiration(DateUtil.offsetHour(new Date(), 2))
                 .setId(UUID.randomUUID().toString())
-                .signWith(SignatureAlgorithm.HS256, publicKey)
+                .signWith(SignatureAlgorithm.HS256, JWTUtil.SECRET_KEY)
                 .compact();
         return token;
     }
@@ -39,12 +40,12 @@ public class JWTUtil {
      *
      * @return {@link String}
      */
-    public static Map<String, String> deToken(String token, String publicKey) {
+    public static Map<String, String> checkToken(String token) {
         JwtParser jwtParser = Jwts.parser();
-        Jws<Claims> claimsJws = jwtParser.setSigningKey(publicKey).parseClaimsJws(token);
-        Claims claims = claimsJws.getBody();
-        Map<String, String> map = new HashMap<>(2);
-        map.put("username", claims.get("username", String.class));
+        Jws<Claims> claimsJws = jwtParser.setSigningKey(JWTUtil.SECRET_KEY).parseClaimsJws(token);
+//        Claims claims = claimsJws.getBody();
+//        Map<String, String> map = new HashMap<>(2);
+//        map.put("username", claims.get("username", String.class));
         return null;
     }
 }

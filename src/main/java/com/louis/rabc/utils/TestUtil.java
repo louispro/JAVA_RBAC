@@ -22,7 +22,7 @@ import java.util.Base64;
 @Slf4j
 public class TestUtil {
 
-    private final Auth auth;
+    private final RSA rsa;
 
     public static String encrypted(String username, String password) {
 
@@ -59,15 +59,51 @@ public class TestUtil {
         return null;
     }
 
-    public void loginEncrypt() {
+    /**
+     * 注册信息加密，加密信息示例：
+     * {
+     *     ”password":"123456",
+     *     "mail":"1765167076",
+     *     "timeMillis":"31121441"
+     * }
+     */
+    public void registerEncrypt() {
+        //
+    }
+
+    /**
+     * 登录通过密码加密，加密信息示例：
+     * {
+     * "password":"123456",
+     * "timeMillis":"234114"
+     * }
+     */
+    public void loginByPasswordEncrypt() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.set("timeMillis", String.valueOf(System.currentTimeMillis()));
         jsonObject.set("password", "123456");
-        RSA rsa = new RSA(auth.getPrivateKey(), auth.getPublicKey());
         log.info("jsonObject ===> {}", jsonObject);
-        String encrypt = rsa.encryptBase64(jsonObject.toString(), KeyType.PublicKey);
+        String encrypt = this.rsa.encryptBase64(jsonObject.toString(), KeyType.PublicKey);
         log.info("encrypt ===> {}", encrypt);
-        String decrypt = rsa.decryptStr(encrypt, KeyType.PrivateKey);
+        String decrypt = this.rsa.decryptStr(encrypt, KeyType.PrivateKey);
+        log.info("decrypt ===> {}", decrypt);
+    }
+
+    /**
+     * 登录通过邮件加密，加密信息示例：
+     * {
+     *     "mail":"1765167076@qq.com",
+     *     "timeMillis","3214141"
+     * }
+     */
+    public void loginByMailEncrypt() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.set("timeMillis", String.valueOf(System.currentTimeMillis()));
+        jsonObject.set("mail", "1765167076@qq.com");
+        log.info("jsonObject ===> {}", jsonObject);
+        String encrypt = this.rsa.encryptBase64(jsonObject.toString(), KeyType.PublicKey);
+        log.info("encrypt ===> {}", encrypt);
+        String decrypt = this.rsa.decryptStr(encrypt, KeyType.PrivateKey);
         log.info("decrypt ===> {}", decrypt);
     }
 

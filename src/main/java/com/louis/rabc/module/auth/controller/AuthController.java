@@ -1,7 +1,8 @@
 package com.louis.rabc.module.auth.controller;
 
-import com.louis.rabc.annotation.ResponseUnify;
+import com.louis.rabc.annotation.AuthAndResponseUnify;
 import com.louis.rabc.module.auth.entity.Auth;
+import com.louis.rabc.module.auth.service.AuthService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class AuthController {
 
-    private final Auth auth;
+    private final AuthService authService;
 
 
     /**
@@ -31,8 +32,9 @@ public class AuthController {
      */
     @PostMapping("publicKey")
     @ApiOperation("获取公钥")
-    @ResponseUnify
+    @AuthAndResponseUnify(isAuth = false)
     public Object getPublicKey() {
+        Auth auth = authService.getById(1);
         return auth.getPublicKey();
     }
 

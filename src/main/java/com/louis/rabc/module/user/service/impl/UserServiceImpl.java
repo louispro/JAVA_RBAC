@@ -20,7 +20,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     public void createUser(String username, String phone, String passwordDigest) {
         User user = new User();
         user.setUsername(username);
-        user.setPhone(phone);
+        user.setMail(phone);
         user.setPassword(passwordDigest);
         user.setCreateTime(new Date());
         this.baseMapper.insert(user);

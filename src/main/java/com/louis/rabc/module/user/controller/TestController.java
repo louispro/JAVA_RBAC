@@ -1,6 +1,6 @@
 package com.louis.rabc.module.user.controller;
 
-import com.louis.rabc.annotation.ResponseUnify;
+import com.louis.rabc.annotation.AuthAndResponseUnify;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +16,6 @@ public class TestController {
     }
 
     @GetMapping("http2https")
-    @ResponseUnify
     public String http2https() {
         return "http重定向至https";
     }

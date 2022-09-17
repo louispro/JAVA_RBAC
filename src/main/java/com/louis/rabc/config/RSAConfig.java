@@ -1,5 +1,6 @@
 package com.louis.rabc.config;
 
+import cn.hutool.crypto.asymmetric.RSA;
 import com.louis.rabc.module.auth.entity.Auth;
 import com.louis.rabc.module.auth.service.AuthService;
 import lombok.AllArgsConstructor;
@@ -15,12 +16,13 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @AllArgsConstructor
-public class AuthConfig {
+public class RSAConfig {
 
     private final AuthService authService;
 
     @Bean
-    public Auth auth() {
-        return authService.getById(1);
+    public RSA rsa() {
+        Auth auth = authService.getById(1);
+        return new RSA(auth.getPrivateKey(), auth.getPublicKey());
     }
 }

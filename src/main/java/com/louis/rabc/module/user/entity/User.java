@@ -39,7 +39,7 @@ public class User extends Model<User> {
     /**
      * 电话
      */
-    private String phone;
+    private String mail;
 
     /**
      * 昵称
