@@ -123,7 +123,6 @@ public class UserController {
     }
 
     /**
-     * 是手机存在
      * 手机号是否存在
      *
      * @param request 请求

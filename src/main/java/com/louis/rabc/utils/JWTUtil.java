@@ -18,15 +18,15 @@ public class JWTUtil {
      * 生成token
      *
      * @param username  用户名
-     * @param role      角色
+     * @param roles      角色
      * @return {@link String}
      */
-    public static String generateToken(String username, String role) {
+    public static String generateToken(String username, String roles) {
         JwtBuilder jwtBuilder = Jwts.builder();
         String token = jwtBuilder.setHeaderParam("typ", "JWT")
                 .setHeaderParam("alg", "HS256")
                 .claim("username", username)
-                .claim("role", role)
+                .claim("roles", roles)
                 .setSubject("authentication-login")
                 .setExpiration(DateUtil.offsetHour(new Date(), 2))
                 .setId(UUID.randomUUID().toString())
@@ -40,12 +40,12 @@ public class JWTUtil {
      *
      * @return {@link String}
      */
-    public static Map<String, String> checkToken(String token) {
+    public static String checkToken(String token) {
         JwtParser jwtParser = Jwts.parser();
         Jws<Claims> claimsJws = jwtParser.setSigningKey(JWTUtil.SECRET_KEY).parseClaimsJws(token);
-//        Claims claims = claimsJws.getBody();
+        Claims claims = claimsJws.getBody();
 //        Map<String, String> map = new HashMap<>(2);
 //        map.put("username", claims.get("username", String.class));
-        return null;
+        return claims.get("roles", String.class);
     }
 }

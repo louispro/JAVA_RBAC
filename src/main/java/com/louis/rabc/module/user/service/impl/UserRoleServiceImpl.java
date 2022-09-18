@@ -29,7 +29,7 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRole> impl
         UserRole userRole =  new UserRole();
         userRole.setUserId(userId);
         //新注册用户默认为普通用户
-        userRole.setRoleId(5L);
+        userRole.setRoleId(6L);
         return this.baseMapper.insert(userRole) > 0;
     }
 }

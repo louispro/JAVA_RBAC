@@ -8,7 +8,10 @@ import com.louis.rabc.code.ResultCode;
 import com.louis.rabc.exception.BusinessException;
 import com.louis.rabc.module.auth.entity.BlackToken;
 import com.louis.rabc.module.auth.service.BlackTokenService;
+import com.louis.rabc.module.user.entity.RolePermission;
+import com.louis.rabc.module.user.service.RolePermissionService;
 import com.louis.rabc.utils.JWTUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -16,16 +19,21 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Set;
 
 @Component
+@Slf4j
 public class ResponseResultInterceptor implements HandlerInterceptor {
 
     /* 使用统一返回体的标识 */
     private static final String RESPONSE_RESULT_ANNOTATION = "RESPONSE-RESULT-ANNOTATION";
     private BlackTokenService blackTokenService;
+    private RolePermissionService rolePermissionService;
 
-    public ResponseResultInterceptor(BlackTokenService blackTokenService) {
+    public ResponseResultInterceptor(RolePermissionService rolePermissionService, BlackTokenService blackTokenService) {
         this.blackTokenService = blackTokenService;
+        this.rolePermissionService = rolePermissionService;
     }
 
     @Override
@@ -46,10 +54,23 @@ public class ResponseResultInterceptor implements HandlerInterceptor {
             // 判断是否在方法上加了注解
             else if (method.isAnnotationPresent(AuthAndResponseUnify.class)) {
                 AuthAndResponseUnify authAndResponseUnify = method.getAnnotation(AuthAndResponseUnify.class);
-                //身份及权限验证
+                String roles = null;
+                //身份验证
                 if (authAndResponseUnify.isAuthentication()) {
                     String token = request.getHeader("token");
-                    this.checkToken(token);
+                    roles = this.checkToken(token);
+                }
+                //权限验证
+                if (authAndResponseUnify.isAuthorization()) {
+                    String path = request.getServletPath();
+                    log.info("用户角色 ===》 {}", roles);
+                    //获取用户的所有权限
+                    List<String> pathList = this.rolePermissionService.getPermissions(roles);
+                    if (!pathList.contains(path)) {
+                        throw new BusinessException(ResultCode.PERMISSION_DENY);
+                    }
+//                    log.info("请求路径 ===》 {}", request.getServletPath());
+//                    log.info("权限验证 ===》 {}", roles);
                 }
                 // 设置该请求返回体，需要包装，往下传递，在ResponseBodyAdvice接口进行判断
                 request.setAttribute(RESPONSE_RESULT_ANNOTATION, method.getAnnotation(AuthAndResponseUnify.class));
@@ -58,7 +79,7 @@ public class ResponseResultInterceptor implements HandlerInterceptor {
         return true;
     }
 
-    private void checkToken(String token) {
+    private String checkToken(String token) {
         if (StrUtil.isBlank(token)) {
             throw new BusinessException(ResultCode.TOKEN_NULL);
         }
@@ -68,7 +89,7 @@ public class ResponseResultInterceptor implements HandlerInterceptor {
             throw new BusinessException(ResultCode.TOKEN_BLACK);
         }
         try {
-            JWTUtil.checkToken(token);
+            return JWTUtil.checkToken(token);
         } catch (Exception exception) {
             throw new BusinessException(ResultCode.TOKEN_ERROR);
         }

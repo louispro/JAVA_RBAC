@@ -6,6 +6,7 @@ import com.louis.rabc.module.user.entity.User;
 import com.louis.rabc.module.user.vo.UserVo;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 public interface LoginService {
     /**
@@ -31,7 +32,7 @@ public interface LoginService {
      * @param dto 用户名和密码
      * @return {@link String}
      */
-    String loginByPassword(UserLoginDto dto);
+    Map<String, String> loginByPassword(UserLoginDto dto);
 
     /**
      * 检查令牌
@@ -55,7 +56,7 @@ public interface LoginService {
      * @param mail 邮件
      * @return {@link String}
      */
-    String loginByMail(String mail, String authCode);
+    Map<String, String> loginByMail(String mail, String authCode);
 
     /**
      * md5密码

@@ -19,6 +19,7 @@ import com.louis.rabc.module.auth.service.AuthService;
 import com.louis.rabc.module.auth.service.BlackTokenService;
 import com.louis.rabc.module.user.dto.UserLoginDto;
 import com.louis.rabc.module.user.entity.User;
+import com.louis.rabc.module.user.entity.UserRole;
 import com.louis.rabc.module.user.service.LoginService;
 import com.louis.rabc.module.user.service.UserRoleService;
 import com.louis.rabc.module.user.service.UserService;
@@ -32,7 +33,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * @author laixiaoyi
@@ -80,7 +85,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public String loginByPassword(UserLoginDto dto) {
+    public Map<String, String> loginByPassword(UserLoginDto dto) {
         //todo 用户名和密码参数校验
         String username = dto.getUsername();
         //解密密文获取密码
@@ -96,7 +101,14 @@ public class LoginServiceImpl implements LoginService {
         if (!user.getPassword().equals(passwordDigest)) {
             throw new BusinessException(ResultCode.PASSWORD_ERROR);
         }
-        return JWTUtil.generateToken(user.getUsername(), "");
+        List<UserRole> userRoleList = this.userRoleService.list(Wrappers.<UserRole>lambdaQuery().eq(UserRole::getUserId, user.getId()));
+        //讲角色信息转换为JSON
+        List<Long> roleList = userRoleList.stream().map(UserRole::getRoleId).collect(Collectors.toList());
+        String rolesJson = JSONUtil.toJsonStr(roleList);
+        Map<String, String> map = new HashMap<>(2);
+        map.put("roles", rolesJson);
+        map.put("token", JWTUtil.generateToken(user.getUsername(), rolesJson));
+        return map;
     }
 
     @Override
@@ -113,7 +125,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public String loginByMail(String mail, String authCode) {
+    public Map<String, String> loginByMail(String mail, String authCode) {
         log.info("验证码前端输入为： ===> {}", authCode);
         String redisAuthCode = stringRedisTemplate.opsForValue().get(mail);
         if (StrUtil.isBlank(redisAuthCode)) {
@@ -126,7 +138,15 @@ public class LoginServiceImpl implements LoginService {
         if (ObjectUtil.isEmpty(user)) {
             throw new BusinessException(ResultCode.USER_NOT_FOUND);
         }
-        return JWTUtil.generateToken(user.getUsername(), "");
+        List<UserRole> userRoleList = this.userRoleService.list(Wrappers.<UserRole>lambdaQuery().eq(UserRole::getUserId, user.getId()));
+        //讲角色信息转换为JSON
+        List<Long> roleList = userRoleList.stream().map(UserRole::getRoleId).collect(Collectors.toList());
+        String rolesJson = JSONUtil.toJsonStr(roleList);
+        Map<String, String> map = new HashMap<>(2);
+        map.put("roles", rolesJson);
+        log.info("roles ===> {}", rolesJson);
+        map.put("token", JWTUtil.generateToken(user.getUsername(), rolesJson));
+        return map;
     }
 
     /**

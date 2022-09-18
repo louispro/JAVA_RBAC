@@ -2,8 +2,6 @@ package com.louis.rabc.module.user.entity;
 
 import java.util.Date;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.io.Serializable;
@@ -11,35 +9,29 @@ import java.io.Serializable;
 import lombok.Data;
 
 /**
- * (Permission)表实体类
+ * (Resource)表实体类
  *
  * @author 赖小燚
- * @since 2022-09-14 21:13:21
+ * @since 2022-09-18 17:23:03
  */
 @SuppressWarnings("serial")
 @Data
-public class Permission extends Model<Permission> {
+public class Resource extends Model<Resource> {
 
     /**
      * 主键
      */
-    @TableId(type = IdType.AUTO)
-    private Long id;
+    private String id;
 
     /**
      * 资源名
      */
-    private String permissionName;
+    private String resourceName;
 
     /**
-     * 资源路径
+     * 资源种类
      */
-    private String path;
-
-    /**
-     * 备注
-     */
-    private String remark;
+    private String resourceSpecies;
 
     /**
      * 创建时间
@@ -52,7 +44,7 @@ public class Permission extends Model<Permission> {
     private Date updateTime;
 
     /**
-     * 逻辑删除，0未删除，1已删除
+     * 逻辑删除
      */
     private Integer deleteState;
 

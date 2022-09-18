@@ -2,9 +2,12 @@ package com.louis.rabc.module.user.controller;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.louis.rabc.annotation.AuthAndResponseUnify;
 import com.louis.rabc.module.user.dto.UserLoginDto;
+import com.louis.rabc.module.user.entity.UserRole;
 import com.louis.rabc.module.user.service.LoginService;
+import com.louis.rabc.module.user.service.UserRoleService;
 import com.louis.rabc.module.user.vo.UserVo;
 import com.louis.rabc.utils.HttpUtil;
 import lombok.AllArgsConstructor;
@@ -14,13 +17,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @Slf4j
 @AllArgsConstructor
 public class LoginController {
 
-    private LoginService loginService;
+    private final LoginService loginService;
+    private final UserRoleService userRoleService;
 
     /**
      * 请求参数：username,authCode,ciphertext,其中ciphertext为password,mail,timeMillis以json格式加密得到
@@ -60,13 +67,13 @@ public class LoginController {
      */
     @PostMapping("loginByPassword")
     @AuthAndResponseUnify(isAuthentication = false, isAuthorization = false)
-    public String loginByPassword(@RequestBody UserLoginDto dto) {
-        return loginService.loginByPassword(dto);
+    public Map<String, String> loginByPassword(@RequestBody UserLoginDto dto) {
+        return this.loginService.loginByPassword(dto);
     }
 
     @PostMapping("loginByMail")
     @AuthAndResponseUnify(isAuthentication = false, isAuthorization = false)
-    public String loginByMail(HttpServletRequest request) {
+    public Map<String, String> loginByMail(HttpServletRequest request) {
 //        String authCode = String.valueOf((int)((Math.random() * 9 + 1) * Math.pow(10,5)));
         String requestJson = HttpUtil.readData(request);
         log.info("requestParam ===> {}", requestJson);
