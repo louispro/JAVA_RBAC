@@ -55,7 +55,20 @@ public interface LoginService {
      * @param mail 邮件
      * @return {@link String}
      */
-    Boolean loginByMail(String mail, String authCode);
+    String loginByMail(String mail, String authCode);
 
+    /**
+     * md5密码
+     *
+     * @param password 密码
+     * @return {@link String}
+     */
     String passwordMd5(String password);
+
+    /**
+     * 获得身份验证代码
+     *
+     * @param request 请求
+     */
+    void getAuthCode(HttpServletRequest request);
 }

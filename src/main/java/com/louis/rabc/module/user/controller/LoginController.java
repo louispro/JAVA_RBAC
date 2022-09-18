@@ -3,8 +3,6 @@ package com.louis.rabc.module.user.controller;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.louis.rabc.annotation.AuthAndResponseUnify;
-import com.louis.rabc.module.auth.entity.QQMail;
-import com.louis.rabc.module.auth.service.AuthService;
 import com.louis.rabc.module.user.dto.UserLoginDto;
 import com.louis.rabc.module.user.service.LoginService;
 import com.louis.rabc.module.user.vo.UserVo;
@@ -23,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 public class LoginController {
 
     private LoginService loginService;
-    private AuthService authService;
 
     /**
      * 请求参数：username,authCode,ciphertext,其中ciphertext为password,mail,timeMillis以json格式加密得到
@@ -34,7 +31,7 @@ public class LoginController {
      * @return {@link String}
      */
     @PostMapping("register")
-    @AuthAndResponseUnify(isAuth = false)
+    @AuthAndResponseUnify(isAuthentication = false, isAuthorization = false)
     public Boolean register(HttpServletRequest request) {
         String requestParam = HttpUtil.readData(request);
         log.info("requestParam ===> {}", requestParam);
@@ -51,22 +48,9 @@ public class LoginController {
      * 获得身份验证代码
      */
     @PostMapping("authCode")
-    @AuthAndResponseUnify(isAuth = false)
+    @AuthAndResponseUnify(isAuthentication = false, isAuthorization = false)
     public void getAuthCode(HttpServletRequest request) {
-        //生成6位数验证码
-        String authCode = String.valueOf((int)((Math.random() * 9 + 1) * Math.pow(10,5)));
-        String requestJson = HttpUtil.readData(request);
-        log.info("requestParam ===> {}", requestJson);
-        String ciphertext = JSONUtil.parseObj(requestJson).get("ciphertext", String.class);
-        String clearJson = this.loginService.decryptCiphertext(ciphertext);
-        String mail = JSONUtil.parseObj(clearJson).get("mail", String.class);
-        QQMail qqMail = new QQMail();
-        log.info("mail ===> {}", mail);
-        qqMail.setAcceptMailAccount(mail);
-        qqMail.setTheme("验证码");
-        //todo 替换成authCode
-        qqMail.setMailText("338166");
-        this.authService.sendQQMail(qqMail);
+        this.loginService.getAuthCode(request);
     }
 
     /**
@@ -75,14 +59,14 @@ public class LoginController {
      * @return {@link UserVo}
      */
     @PostMapping("loginByPassword")
-    @AuthAndResponseUnify(isAuth = false)
+    @AuthAndResponseUnify(isAuthentication = false, isAuthorization = false)
     public String loginByPassword(@RequestBody UserLoginDto dto) {
         return loginService.loginByPassword(dto);
     }
 
     @PostMapping("loginByMail")
-    @AuthAndResponseUnify(isAuth = false)
-    public Boolean loginByMail(HttpServletRequest request) {
+    @AuthAndResponseUnify(isAuthentication = false, isAuthorization = false)
+    public String loginByMail(HttpServletRequest request) {
 //        String authCode = String.valueOf((int)((Math.random() * 9 + 1) * Math.pow(10,5)));
         String requestJson = HttpUtil.readData(request);
         log.info("requestParam ===> {}", requestJson);
@@ -99,8 +83,8 @@ public class LoginController {
      * @return {@link Boolean}
      */
     @PostMapping("logout")
-    @AuthAndResponseUnify
-    public Boolean logout(HttpServletRequest request, @RequestBody Long id) {
+    @AuthAndResponseUnify(isAuthorization = false)
+    public Boolean logout(HttpServletRequest request) {
         return this.loginService.logout(request);
     }
 

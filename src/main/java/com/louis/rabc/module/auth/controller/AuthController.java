@@ -32,7 +32,7 @@ public class AuthController {
      */
     @PostMapping("publicKey")
     @ApiOperation("获取公钥")
-    @AuthAndResponseUnify(isAuth = false)
+    @AuthAndResponseUnify(isAuthentication = false, isAuthorization = false)
     public Object getPublicKey() {
         Auth auth = authService.getById(1);
         return auth.getPublicKey();

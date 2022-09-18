@@ -17,10 +17,10 @@ import java.util.Date;
 @Service("userService")
 public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserService {
     @Override
-    public void createUser(String username, String phone, String passwordDigest) {
+    public void createUser(String username, String mail, String passwordDigest) {
         User user = new User();
         user.setUsername(username);
-        user.setMail(phone);
+        user.setMail(mail);
         user.setPassword(passwordDigest);
         user.setCreateTime(new Date());
         this.baseMapper.insert(user);

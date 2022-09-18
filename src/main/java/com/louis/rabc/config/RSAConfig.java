@@ -3,6 +3,7 @@ package com.louis.rabc.config;
 import cn.hutool.crypto.asymmetric.RSA;
 import com.louis.rabc.module.auth.entity.Auth;
 import com.louis.rabc.module.auth.service.AuthService;
+import com.louis.rabc.module.auth.service.impl.AuthServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

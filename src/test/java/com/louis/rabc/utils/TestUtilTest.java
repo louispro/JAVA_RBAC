@@ -19,4 +19,24 @@ class TestUtilTest {
     void loginByMailEncrypt() {
         testUtil.loginByMailEncrypt();
     }
+
+    @Test
+    void redisTest() {
+        testUtil.redisTest();
+    }
+
+    @Test
+    void registerEncrypt() {
+        this.testUtil.registerEncrypt();
+    }
+
+    @Test
+    void forgetPasswordEncrypt() {
+        this.testUtil.forgetPasswordEncrypt();
+    }
+
+    @Test
+    void resetPasswordEncrypt() {
+        this.testUtil.resetPasswordEncrypt();
+    }
 }

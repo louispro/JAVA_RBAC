@@ -3,14 +3,19 @@ package com.louis.rabc.utils;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
+import cn.hutool.crypto.digest.MD5;
 import cn.hutool.json.JSONObject;
 import com.louis.rabc.module.auth.entity.Auth;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -23,6 +28,12 @@ import java.util.Base64;
 public class TestUtil {
 
     private final RSA rsa;
+    private final StringRedisTemplate redisTemplate;
+
+    public void redisTest() {
+//        redisTemplate.opsForValue().set("louis", "123", 60, TimeUnit.SECONDS);
+        log.info(redisTemplate.opsForValue().get("louis"));
+    }
 
     public static String encrypted(String username, String password) {
 
@@ -51,7 +62,6 @@ public class TestUtil {
             System.out.println("将要加密的密文为： " + "17605609116");
 //            System.out.println("将要加密的密文为： " + jsonObject.toString());
             String encrypt = rsa.encryptBase64("17605609116", KeyType.PublicKey);
-//            String encrypt = rsa.encryptBase64(jsonObject.toString(), KeyType.PublicKey);
             System.out.println("rsa加密后的密文为：" + encrypt);
             String decrypt = rsa.decryptStr(encrypt, KeyType.PrivateKey);
             System.out.println("解密后的密文为：" + decrypt);
@@ -68,7 +78,15 @@ public class TestUtil {
      * }
      */
     public void registerEncrypt() {
-        //
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.set("password", "123456");
+        jsonObject.set("timeMillis", String.valueOf(System.currentTimeMillis()));
+        jsonObject.set("mail", "1765167076@qq.com");
+        System.out.println("将要加密的密文为： " + jsonObject.toString());
+        String encrypt = rsa.encryptBase64(jsonObject.toString(), KeyType.PublicKey);
+        System.out.println("rsa加密后的密文为：" + encrypt);
+        String decrypt = rsa.decryptStr(encrypt, KeyType.PrivateKey);
+        System.out.println("解密后的密文为：" + decrypt);
     }
 
     /**
@@ -90,10 +108,11 @@ public class TestUtil {
     }
 
     /**
+     * 登录通过邮件加密
      * 登录通过邮件加密，加密信息示例：
      * {
-     *     "mail":"1765167076@qq.com",
-     *     "timeMillis","3214141"
+     * "mail":"1765167076@qq.com",
+     * "timeMillis","3214141"
      * }
      */
     public void loginByMailEncrypt() {
@@ -107,8 +126,35 @@ public class TestUtil {
         log.info("decrypt ===> {}", decrypt);
     }
 
+    /**
+     * 忘记密码加密
+     */
+    public void forgetPasswordEncrypt() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.set("timeMillis", String.valueOf(System.currentTimeMillis()));
+        jsonObject.set("mail", "1765167076@qq.com");
+        jsonObject.set("password", "111111");
+        log.info("jsonObject ===> {}", jsonObject);
+        String encrypt = this.rsa.encryptBase64(jsonObject.toString(), KeyType.PublicKey);
+        log.info("encrypt ===> {}", encrypt);
+        String decrypt = this.rsa.decryptStr(encrypt, KeyType.PrivateKey);
+        log.info("decrypt ===> {}", decrypt);
+    }
+
+    public void resetPasswordEncrypt() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.set("timeMillis", String.valueOf(System.currentTimeMillis()));
+        jsonObject.set("mail", "1765167076@qq.com");
+        jsonObject.set("oldPassword", "123456");
+        jsonObject.set("newPassword", "111111");
+        log.info("jsonObject ===> {}", jsonObject);
+        String encrypt = this.rsa.encryptBase64(jsonObject.toString(), KeyType.PublicKey);
+        log.info("encrypt ===> {}", encrypt);
+        String decrypt = this.rsa.decryptStr(encrypt, KeyType.PrivateKey);
+        log.info("decrypt ===> {}", decrypt);
+    }
+
     public static void main(String[] args) {
-        TestUtil.encrypted("louis", "123456");
-        //生成公私钥对
+        System.out.println(new MD5().digestHex("123456"));
     }
 }

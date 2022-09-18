@@ -14,20 +14,25 @@ import com.louis.rabc.code.ResultCode;
 import com.louis.rabc.exception.BusinessException;
 import com.louis.rabc.module.auth.entity.Auth;
 import com.louis.rabc.module.auth.entity.BlackToken;
+import com.louis.rabc.module.auth.entity.QQMail;
+import com.louis.rabc.module.auth.service.AuthService;
 import com.louis.rabc.module.auth.service.BlackTokenService;
 import com.louis.rabc.module.user.dto.UserLoginDto;
 import com.louis.rabc.module.user.entity.User;
 import com.louis.rabc.module.user.service.LoginService;
 import com.louis.rabc.module.user.service.UserRoleService;
 import com.louis.rabc.module.user.service.UserService;
+import com.louis.rabc.utils.HttpUtil;
 import com.louis.rabc.utils.JWTUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author laixiaoyi
@@ -42,6 +47,8 @@ public class LoginServiceImpl implements LoginService {
     private UserRoleService userRoleService;
     private RSA rsa;
     private BlackTokenService blackTokenService;
+    private StringRedisTemplate stringRedisTemplate;
+    private AuthService authService;
 
     @Override
     public String decryptCiphertext(String ciphertext) {
@@ -57,14 +64,18 @@ public class LoginServiceImpl implements LoginService {
         //todo redis存储验证码
         String username = requestJson.get("username", String.class);
         String authCode = requestJson.get("authCode", String.class);
-        if ("33816".equals(authCode)) {
-            throw new BusinessException(ResultCode.AUTHCODE_ERROR);
-        }
         JSONObject clearJson = JSONUtil.parseObj(decrypt);
         String password = clearJson.get("password", String.class);
-        String phone = clearJson.get("phone", String.class);
+        String mail = clearJson.get("mail", String.class);
+        String redisAuthCode = stringRedisTemplate.opsForValue().get(mail);
+        if (StrUtil.isBlank(redisAuthCode)) {
+            throw new BusinessException(ResultCode.AUTHCODE_EXPIRE);
+        }
+        if (!redisAuthCode.equals(authCode)) {
+            throw new BusinessException(ResultCode.AUTHCODE_ERROR);
+        }
         //密码加密
-        this.userService.createUser(username, phone, this.passwordMd5(password));
+        this.userService.createUser(username, mail, this.passwordMd5(password));
         return userRoleService.addUserRole(username);
     }
 
@@ -102,15 +113,20 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public Boolean loginByMail(String mail, String authCode) {
-        if ("338166".equals(authCode)) {
+    public String loginByMail(String mail, String authCode) {
+        log.info("验证码前端输入为： ===> {}", authCode);
+        String redisAuthCode = stringRedisTemplate.opsForValue().get(mail);
+        if (StrUtil.isBlank(redisAuthCode)) {
+            throw new BusinessException(ResultCode.AUTHCODE_EXPIRE);
+        }
+        if (!authCode.equals(redisAuthCode)) {
             throw new BusinessException(ResultCode.AUTHCODE_ERROR);
         }
         User user = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getMail, mail));
         if (ObjectUtil.isEmpty(user)) {
             throw new BusinessException(ResultCode.USER_NOT_FOUND);
         }
-        return true;
+        return JWTUtil.generateToken(user.getUsername(), "");
     }
 
     /**
@@ -123,5 +139,26 @@ public class LoginServiceImpl implements LoginService {
         //密码加密
         MD5 md5 = new MD5();
         return md5.digestHex(password);
+    }
+
+    @Override
+    public void getAuthCode(HttpServletRequest request) {
+        //生成6位数验证码
+//        String authCode = String.valueOf((int)((Math.random() * 9 + 1) * Math.pow(10,5)));
+        String authCode = "338166";
+        String requestJson = HttpUtil.readData(request);
+        log.info("requestParam ===> {}", requestJson);
+        String ciphertext = JSONUtil.parseObj(requestJson).get("ciphertext", String.class);
+        String clearJson = this.decryptCiphertext(ciphertext);
+        String mail = JSONUtil.parseObj(clearJson).get("mail", String.class);
+        //将验证码存储到redis中，2分钟过期
+        this.stringRedisTemplate.opsForValue().set(mail, authCode, 3600, TimeUnit.SECONDS);
+        QQMail qqMail = new QQMail();
+        log.info("mail ===> {}", mail);
+        qqMail.setAcceptMailAccount(mail);
+        qqMail.setTheme("验证码");
+        //todo 替换成authCode
+        qqMail.setMailText("338166");
+        this.authService.sendQQMail(qqMail);
     }
 }

@@ -17,5 +17,7 @@ public @interface AuthAndResponseUnify {
      *
      * @return boolean
      */
-    boolean isAuth() default true;
+    boolean isAuthentication() default true;
+
+    boolean isAuthorization() default true;
 }

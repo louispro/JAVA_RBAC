@@ -19,6 +19,7 @@ public enum ResultCode {
     TOKEN_NULL(4007, "令牌为空"),
     TOKEN_BLACK(4008, "令牌无效"),
     AUTHCODE_ERROR(4009, "验证码错误"),
+    AUTHCODE_EXPIRE(4010, "验证码过期"),
     SERVER_ERROR(5000, "服务器内部错误")
 
 
