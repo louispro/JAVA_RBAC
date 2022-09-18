@@ -66,11 +66,11 @@ public class ResponseResultInterceptor implements HandlerInterceptor {
                     log.info("用户角色 ===》 {}", roles);
                     //获取用户的所有权限
                     List<String> pathList = this.rolePermissionService.getPermissions(roles);
+                    log.info("用户权限 ---> {}", pathList);
+                    log.info("用户访问资源 ===> {}", path);
                     if (!pathList.contains(path)) {
                         throw new BusinessException(ResultCode.PERMISSION_DENY);
                     }
-//                    log.info("请求路径 ===》 {}", request.getServletPath());
-//                    log.info("权限验证 ===》 {}", roles);
                 }
                 // 设置该请求返回体，需要包装，往下传递，在ResponseBodyAdvice接口进行判断
                 request.setAttribute(RESPONSE_RESULT_ANNOTATION, method.getAnnotation(AuthAndResponseUnify.class));
