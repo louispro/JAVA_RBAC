@@ -81,7 +81,7 @@ public class TestUtil {
         JSONObject jsonObject = new JSONObject();
         jsonObject.set("password", "123456");
         jsonObject.set("timeMillis", String.valueOf(System.currentTimeMillis()));
-        jsonObject.set("mail", "1765167076@qq.com");
+        jsonObject.set("mail", "llhhyy1999611@163.com");
         System.out.println("将要加密的密文为： " + jsonObject.toString());
         String encrypt = rsa.encryptBase64(jsonObject.toString(), KeyType.PublicKey);
         System.out.println("rsa加密后的密文为：" + encrypt);
@@ -118,7 +118,7 @@ public class TestUtil {
     public void loginByMailEncrypt() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.set("timeMillis", String.valueOf(System.currentTimeMillis()));
-        jsonObject.set("mail", "1765167076@qq.com");
+        jsonObject.set("mail", "llhhyy1999611@163.com");
         log.info("jsonObject ===> {}", jsonObject);
         String encrypt = this.rsa.encryptBase64(jsonObject.toString(), KeyType.PublicKey);
         log.info("encrypt ===> {}", encrypt);

@@ -48,7 +48,7 @@ public class SwaggerConfig {
      */
     private ApiInfo  apiInfo(){
         return new ApiInfoBuilder()
-                .title("swagger3接口文档")
+                .title("RBAC权限管理接口文档")
                 .description("RBAC权限管理")
                 .contact(new Contact("louis_lai","http://github.com/louispro","1598358615@qq.com"))
                 .version("版本号：1.0")

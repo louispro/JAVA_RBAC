@@ -19,5 +19,10 @@ public @interface AuthAndResponseUnify {
      */
     boolean isAuthentication() default true;
 
+    /**
+     * 是否进行 权限验证
+     *
+     * @return boolean
+     */
     boolean isAuthorization() default true;
 }

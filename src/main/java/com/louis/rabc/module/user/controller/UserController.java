@@ -13,6 +13,8 @@ import com.louis.rabc.module.user.entity.User;
 import com.louis.rabc.module.user.service.LoginService;
 import com.louis.rabc.module.user.service.UserService;
 import com.louis.rabc.utils.HttpUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -24,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author laixiaoyi
  * @since 2022/9/16 10:49
  **/
+@Api("用户接口")
 @RestController
 @RequestMapping("user")
 @AllArgsConstructor
@@ -32,7 +35,6 @@ public class UserController {
 
     private final UserService userService;
     private final LoginService loginService;
-    private RSA rsa;
     private final StringRedisTemplate stringRedisTemplate;
 
     /**
@@ -41,6 +43,7 @@ public class UserController {
      *
      * @return {@link String}
      */
+    @ApiOperation("重置密码")
     @PostMapping("resetPwd")
     @AuthAndResponseUnify(isAuthorization = false)
     public Boolean resetPassword(HttpServletRequest request) {
@@ -74,6 +77,7 @@ public class UserController {
      * @param request 请求
      * @return {@link Boolean}
      */
+    @ApiOperation("忘记密码")
     @PostMapping("forgetPassword")
     @AuthAndResponseUnify(isAuthentication = false, isAuthorization = false)
     public Boolean forgetPassword(HttpServletRequest request) {
@@ -100,6 +104,7 @@ public class UserController {
      *
      * @return {@link User}
      */
+    @ApiOperation("更新用户信息")
     @PostMapping("update/{id}")
     @AuthAndResponseUnify
     public User update(@RequestBody UserUpdateDto dto) {
@@ -112,6 +117,7 @@ public class UserController {
      * @param username 用户名
      * @return {@link Boolean}
      */
+    @ApiOperation("用户名是被注册")
     @GetMapping("username")
     @AuthAndResponseUnify(isAuthentication = false, isAuthorization = false)
     public Boolean isUsernameExist(@RequestParam("username") String username) {
@@ -128,7 +134,8 @@ public class UserController {
      * @param request 请求
      * @return {@link Boolean}
      */
-    @PostMapping("phone")
+    @ApiOperation("邮箱是否被注册")
+    @PostMapping("mail")
     @AuthAndResponseUnify(isAuthentication = false, isAuthorization = false)
     public Boolean isPhoneExist(HttpServletRequest request) {
         String requestJson = HttpUtil.readData(request);

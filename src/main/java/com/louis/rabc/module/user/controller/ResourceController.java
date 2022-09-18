@@ -3,6 +3,8 @@ package com.louis.rabc.module.user.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.louis.rabc.annotation.AuthAndResponseUnify;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import com.louis.rabc.module.user.entity.Resource;
 import com.louis.rabc.module.user.service.ResourceService;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
  * @author 赖小燚
  * @since 2022-09-18 17:23:02
  */
+@Api(tags = "访问内部资源")
 @RestController
 @RequestMapping("resource")
 @AllArgsConstructor
@@ -32,6 +35,7 @@ public class ResourceController {
      *
      * @return {@link List}<{@link String}>
      */
+    @ApiOperation("获取后端资源")
     @PostMapping("/java")
     @AuthAndResponseUnify
     public List<String> getJava() {
@@ -44,6 +48,7 @@ public class ResourceController {
      *
      * @return {@link List}<{@link String}>
      */
+    @ApiOperation("获取前端资源")
     @PostMapping("/web")
     @AuthAndResponseUnify
     public List<String> getWeb() {
@@ -56,6 +61,7 @@ public class ResourceController {
      *
      * @return {@link List}<{@link String}>
      */
+    @ApiOperation("获取测试资源")
     @PostMapping("/test")
     @AuthAndResponseUnify
     public List<String> getTest() {
@@ -68,6 +74,7 @@ public class ResourceController {
      *
      * @return {@link List}<{@link String}>
      */
+    @ApiOperation("获取全栈资源")
     @PostMapping("/stock")
     @AuthAndResponseUnify
     public List<String> getStock() {
@@ -80,6 +87,7 @@ public class ResourceController {
      *
      * @return {@link List}<{@link String}>
      */
+    @ApiOperation("获取项目资源")
     @PostMapping("/manager")
     @AuthAndResponseUnify
     public List<String> getManager() {
@@ -92,6 +100,7 @@ public class ResourceController {
      *
      * @return {@link List}<{@link String}>
      */
+    @ApiOperation("获取公共资源")
     @PostMapping("/public")
     @AuthAndResponseUnify
     public List<String> getPublic() {

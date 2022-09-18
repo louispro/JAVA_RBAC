@@ -10,6 +10,8 @@ import com.louis.rabc.module.user.service.LoginService;
 import com.louis.rabc.module.user.service.UserRoleService;
 import com.louis.rabc.module.user.vo.UserVo;
 import com.louis.rabc.utils.HttpUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +26,7 @@ import java.util.Map;
 @RestController
 @Slf4j
 @AllArgsConstructor
+@Api(tags = "登录与注册")
 public class LoginController {
 
     private final LoginService loginService;
@@ -37,6 +40,7 @@ public class LoginController {
      * @param request 请求
      * @return {@link String}
      */
+    @ApiOperation("注册")
     @PostMapping("register")
     @AuthAndResponseUnify(isAuthentication = false, isAuthorization = false)
     public Boolean register(HttpServletRequest request) {
@@ -54,6 +58,7 @@ public class LoginController {
      * 参数格式：json
      * 获得身份验证代码
      */
+    @ApiOperation("获取验证码")
     @PostMapping("authCode")
     @AuthAndResponseUnify(isAuthentication = false, isAuthorization = false)
     public void getAuthCode(HttpServletRequest request) {
@@ -65,12 +70,14 @@ public class LoginController {
      *
      * @return {@link UserVo}
      */
+    @ApiOperation("通过密码登录")
     @PostMapping("loginByPassword")
     @AuthAndResponseUnify(isAuthentication = false, isAuthorization = false)
     public Map<String, String> loginByPassword(@RequestBody UserLoginDto dto) {
         return this.loginService.loginByPassword(dto);
     }
 
+    @ApiOperation("通过邮箱登录")
     @PostMapping("loginByMail")
     @AuthAndResponseUnify(isAuthentication = false, isAuthorization = false)
     public Map<String, String> loginByMail(HttpServletRequest request) {
@@ -89,6 +96,7 @@ public class LoginController {
      *
      * @return {@link Boolean}
      */
+    @ApiOperation("注销")
     @PostMapping("logout")
     @AuthAndResponseUnify(isAuthorization = false)
     public Boolean logout(HttpServletRequest request) {
